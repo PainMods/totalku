@@ -4,29 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hitungan Pengunjung</title>
-    <style>
-        body {
-            background-color: #0f0f0f;
-            color: #0ff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        .counter-container {
-            background: rgba(0, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
-            box-shadow: 0 0 20px cyan;
-        }
-        h1 {
-            color: #fff;
-        }
-        p {
-            font-size: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="counter-container">
@@ -35,55 +13,6 @@
         <p>All Time Request Count: <span id="allTimeCount">Loading...</span></p>
     </div>
 
-    <script>
-        const url = "https://raw.githubusercontent.com/PainMods/count/refs/heads/main/Database.json";
-        const updateUrl = "https://api.github.com/repos/PainMods/count/contents/Database.json";  
-        const token = "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";  // Ganti dengan token GitHub Anda
-        
-        async function fetchCount() {
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                document.getElementById("todayCount").innerText = data.today;
-                document.getElementById("allTimeCount").innerText = data.allTime;
-                
-                await updateCount(data);
-            } catch (error) {
-                console.error("Error fetching count:", error);
-            }
-        }
-
-        async function updateCount(data) {
-            data.today += 1;
-            data.allTime += 1;
-
-            const updatedContent = JSON.stringify(data, null, 2);
-            const base64Content = btoa(unescape(encodeURIComponent(updatedContent)));
-
-            const getShaResponse = await fetch(updateUrl, { headers: { Authorization: `token ${token}` } });
-            const getShaData = await getShaResponse.json();
-            
-            const updateData = {
-                message: "Update count",
-                content: base64Content,
-                sha: getShaData.sha
-            };
-
-            await fetch(updateUrl, {
-                method: "PUT",
-                headers: {
-                    Authorization: `token ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(updateData)
-            });
-
-            document.getElementById("todayCount").innerText = data.today;
-            document.getElementById("allTimeCount").innerText = data.allTime;
-        }
-
-        fetchCount();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
